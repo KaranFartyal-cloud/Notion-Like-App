@@ -1,6 +1,7 @@
 "use client";
 import { createUser } from "@/app/actions/createUser";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -73,6 +74,13 @@ export default function LoginPage() {
           >
             Sign Up
           </button>
+
+          <p className="text-gray-400 text-center mt-4 text-sm">
+            Don’t have an account?{" "}
+            <Link href={"/sign-in"}>
+              <span className="text-blue-400 cursor-pointer">Login</span>
+            </Link>
+          </p>
         </div>
       </motion.form>
     </div>

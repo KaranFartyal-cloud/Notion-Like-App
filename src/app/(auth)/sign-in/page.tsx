@@ -1,5 +1,8 @@
 "use client";
+import { loginUser } from "@/app/actions/loginUser";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -7,6 +10,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -15,9 +19,17 @@ export default function LoginPage() {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login Data:", userData);
 
-    
+    try {
+      const res = await loginUser(userData);
+      if (res.success) {
+        console.log(res.message);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("couldn't sign-in user");
+    }
   };
 
   return (
@@ -60,7 +72,9 @@ export default function LoginPage() {
 
         <p className="text-gray-400 text-center mt-4 text-sm">
           Don’t have an account?{" "}
-          <span className="text-blue-400 cursor-pointer">Sign Up</span>
+          <Link href={"/sign-up"}>
+            <span className="text-blue-400 cursor-pointer">Sign Up</span>
+          </Link>
         </p>
       </motion.form>
     </div>

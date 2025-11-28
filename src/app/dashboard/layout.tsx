@@ -1,12 +1,17 @@
 import RightSidebar from "@/components/RightSidebar";
+import { SubjectProvider } from "@/context/subjectProvider";
 import React from "react";
+import { fetchSubjects } from "../actions/subject/fetchSubject";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const layout = async ({ children }: { children: React.ReactNode }) => {
+  const res = await fetchSubjects();
   return (
-    <div className="w-full">
-      <RightSidebar />
-      <div>{children}</div>
-    </div>
+    <SubjectProvider>
+      <div className="w-full">
+        <RightSidebar data={res.subjects!} />
+        <div>{children}</div>
+      </div>
+    </SubjectProvider>
   );
 };
 

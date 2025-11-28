@@ -1,14 +1,20 @@
 CREATE TABLE "pages" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"icon" text,
 	"banner" text,
 	"content" text,
-	"subject_id" integer NOT NULL
+	"subject_id" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "sessions" (
+	"id" text PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"expires_at" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "subjects" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"icon" text,
 	"banner" text,

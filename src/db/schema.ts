@@ -14,7 +14,7 @@ export const sessionsTable = pgTable("sessions", {
 });
 
 export const subjectTable = pgTable("subjects", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   title: text("title").notNull(),
   icon: text("icon"),
   banner: text("banner"),
@@ -25,13 +25,13 @@ export const subjectTable = pgTable("subjects", {
 });
 
 export const pageTable = pgTable("pages", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   title: text("title").notNull(),
   icon: text("icon"),
   banner: text("banner"),
   content: text("content"),
 
-  subjectId: integer("subject_id")
+  subjectId: text("subject_id")
     .notNull()
     .references(() => subjectTable.id, { onDelete: "cascade" }),
 });

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -44,7 +45,7 @@ export default function Home() {
           className="mt-10 flex justify-center gap-6"
         >
           <Button className="px-8 py-5 rounded-lg bg-[#4B91DE] text-white text-lg font-semibold hover:bg-[#357CC7] transition-all shadow-md">
-            Get Started
+            <Link href={"/dashboard"}> Get Started</Link>
           </Button>
 
           <Button className="px-8 py-5 rounded-lg border border-[#4B91DE] text-[#4B91DE] text-lg font-semibold bg-white hover:bg-[#4B91DE] hover:text-white transition-all">
