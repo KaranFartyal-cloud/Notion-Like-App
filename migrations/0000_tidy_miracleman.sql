@@ -12,11 +12,11 @@ CREATE TABLE "subjects" (
 	"title" text NOT NULL,
 	"icon" text,
 	"banner" text,
-	"user_id" integer NOT NULL
+	"user_id" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"password" text NOT NULL,
