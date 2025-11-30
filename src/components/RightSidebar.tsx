@@ -74,7 +74,7 @@ const RightSidebar: React.FC<Props> = ({ data }) => {
   }, [isAdding, title]);
 
   return (
-    <div className="w-1/7 h-screen bg-[#202020] flex flex-col pl-4  text-white">
+    <div className="w-1/7 h-screen  bg-[#202020] flex flex-col pl-4  text-white">
       <h1 className=" capitalize text-lg pb-2 font-bold py-3">karan fartyal</h1>
 
       {primary.map((item, index) => (

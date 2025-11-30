@@ -7,9 +7,10 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
   const res = await fetchSubjects();
   return (
     <SubjectProvider>
-      <div className="w-full">
+      <div className="w-full flex">
         <RightSidebar data={res.subjects!} />
-        <div>{children}</div>
+
+       {children}
       </div>
     </SubjectProvider>
   );
