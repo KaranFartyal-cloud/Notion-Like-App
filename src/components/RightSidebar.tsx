@@ -6,6 +6,7 @@ import { BrainCircuit, House, Mail, Plus, Search } from "lucide-react";
 import { createSubject } from "@/app/actions/subject/createSubject";
 import { Input } from "@/components/ui/input";
 import { useSubjects } from "@/context/subjectProvider";
+import Link from "next/link";
 
 type Props = {
   data: {
@@ -108,13 +109,13 @@ const RightSidebar: React.FC<Props> = ({ data }) => {
         />
       )}
       {subjects.map((item) => (
-        <div
-          key={item.id}
-          className="w-full flex justify-start items-center gap-2 pl-4 pb-2"
-        >
-          {item.icon}
-          <span className="text-lg">{item.title}</span>
-        </div>
+        <Link href={`/dashboard/${item.id}`} key={item.id} className="w-full">
+          <div className="w-full flex hover:bg-[#2f2f2f] duration-100 ease-in rounded-lg justify-start items-center gap-2 pl-4 pb-2">
+            {item.icon}
+
+            <span className="text-lg">{item.title}</span>
+          </div>
+        </Link>
       ))}
     </div>
   );

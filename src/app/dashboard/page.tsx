@@ -7,10 +7,14 @@ export default function Page() {
   const [content, setContent] = useState("");
 
   return (
-    <div className="w-full h-screen overflow-y-auto bg-neutral-50 ">
+    <div className="w-full h-30[vh] overflow-y-auto bg-neutral-50 ">
       {/* Image Box */}
       <div className="w-full h-[200px] overflow-hidden relative">
-        <img src="/welcome.jpg" alt="" className=" object-cover w-full h-full" />
+        <img
+          src="/welcome.jpg"
+          alt=""
+          className=" object-cover w-full h-full"
+        />
       </div>
 
       {/* Welcome Text (OVERFLOWS freely) */}
@@ -22,13 +26,9 @@ export default function Page() {
       <div className="border-b border-neutral-200 mb-8 mt-3"></div>
 
       {/* Content */}
-      <textarea
-        className="w-full min-h-[70vh] bg-transparent resize-none outline-none 
-        text-[1.15rem] leading-8 text-neutral-700 placeholder:text-neutral-400"
-        placeholder="Type something…"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea>
+      <div className="w-full h-[40vh]  flex justify-center items-center">
+        <h1>create</h1>
+      </div>
     </div>
   );
 }
