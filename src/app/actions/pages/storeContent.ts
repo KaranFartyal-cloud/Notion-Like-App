@@ -8,10 +8,10 @@ import { eq } from "drizzle-orm";
 
 export const storeData = async (
   data: string,
-  subjectId: string,
-  title: string,
-  icon?: string,
-  banner?: string
+  subjectId: string | undefined,
+  title: string | undefined,
+  icon?: string | undefined,
+  banner?: string | undefined
 ) => {
   try {
     const user = await getCurrentUser();

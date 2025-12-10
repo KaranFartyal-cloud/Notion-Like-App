@@ -7,8 +7,6 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
 
   const subject = await fetchSubject(subjectId);
 
-  console.log(subject);
-
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
       {/* Image Box */}
@@ -29,7 +27,13 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
 
       {/* Content */}
       <div className="px-[100px] py-10">
-        <TextEditor />
+        <TextEditor
+          id={subject.data?.id}
+          userId={subject.data?.userId}
+          title={subject.data?.title}
+          banner={subject.data?.banner}
+          icon={subject.data?.icon}
+        />
       </div>
     </div>
   );

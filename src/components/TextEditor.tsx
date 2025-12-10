@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -8,6 +8,8 @@ import { configureLink } from "@/config/link";
 import Highlight from "@tiptap/extension-highlight";
 import { MenuBar } from "./Menubar";
 import { callAI } from "@/app/actions/askAI";
+import { storeData } from "@/app/actions/pages/storeContent";
+import type { JSONContent } from "@tiptap/core";
 
 const extensions = [
   TextStyleKit,
@@ -16,29 +18,70 @@ const extensions = [
   configureLink,
 ];
 
-export default function SynapsoEditor() {
+type Props = {
+  id: string | undefined;
+  userId: string | undefined;
+  title: string | undefined;
+  icon: string | null | undefined;
+  banner: string | null | undefined;
+};
+
+const SynapsoEditor: React.FC<Props> = ({ id, title, icon, banner }) => {
   const [showCommandInput, setShowCommandInput] = useState(false);
   const [commandText, setCommandText] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
 
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const debouncedSave = useCallback(
+    (json: JSONContent) => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const serialized = JSON.stringify(json);
+
+          await storeData(
+            serialized,
+            id,
+            title,
+            icon ?? undefined,
+            banner ?? undefined
+          );
+          console.log("Autosaved to Neon");
+        } catch (err) {
+          console.error("Autosave error:", err);
+        }
+      }, 1500);
+    },
+    [id, title, icon, banner]
+  );
+
   const editor = useEditor({
     extensions,
     immediatelyRender: false,
     content: ``,
+    onUpdate({ editor }) {
+      const json = editor.getJSON();
+      debouncedSave(json); // 👈 hook autosave into editor updates
+    },
   });
 
+  // focus editor on mount
   useEffect(() => {
     if (!editor) return;
 
-    const id = setTimeout(() => {
-      editor.commands.focus("end"); // or "start" if you prefer
+    const t = setTimeout(() => {
+      editor.commands.focus("end");
     }, 0);
 
-    return () => clearTimeout(id);
+    return () => clearTimeout(t);
   }, [editor]);
 
-  // Track cursor position
+  // Track cursor position for command input placement
   useEffect(() => {
     if (!editor) return;
 
@@ -55,10 +98,6 @@ export default function SynapsoEditor() {
       editor.off("selectionUpdate", handler);
     };
   }, [editor]);
-
-  const getData = () => {
-    console.log(JSON.stringify(editor?.getText()));
-  };
 
   // Focus input when shown
   useEffect(() => {
@@ -86,17 +125,21 @@ export default function SynapsoEditor() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (!editor) return null;
 
   const handleAskAI = async () => {
     try {
-      const result = await callAI(); // no prompt yet, your hardcoded one
-      // Insert AI response at cursor
-      editor
-        .chain()
-        .focus()
-        .insertContent(String(result)) // ensure string
-        .run();
+      const result = await callAI();
+      editor.chain().focus().insertContent(String(result)).run();
     } catch (err) {
       console.error("AI error:", err);
     } finally {
@@ -141,4 +184,6 @@ export default function SynapsoEditor() {
       />
     </EditorContext.Provider>
   );
-}
+};
+
+export default SynapsoEditor;
