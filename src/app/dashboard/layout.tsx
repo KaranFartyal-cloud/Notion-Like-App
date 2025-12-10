@@ -1,7 +1,7 @@
 import RightSidebar from "@/components/RightSidebar";
 import { SubjectProvider } from "@/context/subjectProvider";
 import React from "react";
-import { fetchSubjects } from "../actions/subject/fetchSubject";
+import { fetchSubjects } from "../actions/subject/fetchSubjects";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const res = await fetchSubjects();
