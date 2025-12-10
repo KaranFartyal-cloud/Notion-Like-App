@@ -7,7 +7,8 @@ import {
   ToolbarSeparator,
 } from "@/components/tiptap-ui-primitive/toolbar";
 import { Button } from "@/components/tiptap-ui-primitive/button";
-import Highlight from "@tiptap/extension-highlight";
+
+
 import {
   Bold,
   Code,
@@ -85,7 +86,7 @@ export function MenuBar({ editor }: { editor: Editor }) {
   });
 
   return (
-    <Toolbar variant="fixed">
+    <Toolbar variant="floating" className="flex justify-center ">
       <ToolbarGroup className="control-group ">
         <Button
           data-style="ghost"

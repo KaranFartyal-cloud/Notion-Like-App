@@ -25,8 +25,18 @@ export default function SynapsoEditor() {
   const editor = useEditor({
     extensions,
     immediatelyRender: false,
-    content: "", 
+    content: ``,
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const id = setTimeout(() => {
+      editor.commands.focus("end"); // or "start" if you prefer
+    }, 0);
+
+    return () => clearTimeout(id);
+  }, [editor]);
 
   // Track cursor position
   useEffect(() => {
@@ -98,7 +108,6 @@ export default function SynapsoEditor() {
   return (
     <EditorContext.Provider value={{ editor }}>
       <MenuBar editor={editor} />
-      <button onClick={getData}>get data</button>
 
       {showCommandInput && (
         <div
@@ -126,6 +135,7 @@ export default function SynapsoEditor() {
       )}
 
       <EditorContent
+        className="mt-10 text-white"
         placeholder="Press ctrl + space to ask from synapso AI.."
         editor={editor}
       />

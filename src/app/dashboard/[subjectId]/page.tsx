@@ -1,13 +1,36 @@
+import { fetchSubject } from "@/app/actions/subject/fetchSubject";
 import TextEditor from "@/components/TextEditor";
-import React from "react";
 import "@/styles/styles.scss";
 
-const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const data = await params;
-  console.log(data);
+const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
+  const { subjectId } = await params;
+
+  const subject = await fetchSubject(subjectId);
+
+  console.log(subject);
+
   return (
-    <div className="p-10 bg-red-400 w-full h-screen overflow-scroll overflow-x-hidden">
-      <TextEditor />
+    <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
+      {/* Image Box */}
+      <div className={"w-full h-[200px] overflow-hidden relative" + ``}>
+        {subject.data?.banner && (
+          <img
+            src={"/welcome.jpg"}
+            alt=""
+            className=" object-cover w-full h-full"
+          />
+        )}
+      </div>
+
+      {/* Welcome Text (OVERFLOWS freely) */}
+      <h1 className="text-5xl  text-white font-bold relative -mt-7 ml-6">
+        {subject.data?.title}
+      </h1>
+
+      {/* Content */}
+      <div className="px-[100px] py-10">
+        <TextEditor />
+      </div>
     </div>
   );
 };
