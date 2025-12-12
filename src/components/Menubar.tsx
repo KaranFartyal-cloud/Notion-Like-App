@@ -7,7 +7,7 @@ import {
   ToolbarSeparator,
 } from "@/components/tiptap-ui-primitive/toolbar";
 import { Button } from "@/components/tiptap-ui-primitive/button";
-
+import { TableCell, TableKit } from "@tiptap/extension-table";
 
 import {
   Bold,
@@ -86,7 +86,7 @@ export function MenuBar({ editor }: { editor: Editor }) {
   });
 
   return (
-    <Toolbar variant="floating" className="flex justify-center ">
+    <Toolbar variant="floating">
       <ToolbarGroup className="control-group ">
         <Button
           data-style="ghost"
@@ -202,15 +202,15 @@ export function MenuBar({ editor }: { editor: Editor }) {
         <Button
           data-style="ghost"
           onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#8ce99a" }).run()
+            editor.chain().focus().toggleHighlight({ color: "#425646" }).run()
           }
           className={
-            editor?.isActive("highlight", { color: "#8ce99a" })
+            editor?.isActive("highlight", { color: "#425646" })
               ? "is-active"
               : ""
           }
         >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#8ce99a]"></div>
+          <div className="h-[15px] w-[15px] rounded-full bg-[#76f08e]"></div>
         </Button>
         <Button
           data-style="ghost"
@@ -254,15 +254,15 @@ export function MenuBar({ editor }: { editor: Editor }) {
         <Button
           data-style="ghost"
           onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#F8EE97" }).run()
+            editor.chain().focus().toggleHighlight({ color: "#8d7f00" }).run()
           }
           className={
-            editor?.isActive("highlight", { color: "#F8EE97" })
+            editor?.isActive("highlight", { color: "#8d7f00" })
               ? "is-active"
               : ""
           }
         >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#F8EE97]"></div>
+          <div className="h-[15px] w-[15px] rounded-full bg-[#ffe600]"></div>
         </Button>
         <Button
           data-style="ghost"
@@ -272,6 +272,7 @@ export function MenuBar({ editor }: { editor: Editor }) {
           Unset highlight
         </Button>
       </ToolbarGroup>
+     
       <ToolbarSeparator />
       <ToolbarGroup>
         <Button

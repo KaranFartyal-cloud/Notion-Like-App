@@ -10,12 +10,27 @@ import { MenuBar } from "./Menubar";
 import { callAI } from "@/app/actions/askAI";
 import { storeData } from "@/app/actions/pages/storeContent";
 import type { JSONContent } from "@tiptap/core";
+import { ImagePasteRule } from "./tiptap/pasteRules";
+import { Image } from "@tiptap/extension-image";
+import "@/components/tiptap-node/image-node/image-node.scss";
+import { TableKit } from "@tiptap/extension-table";
+import { CustomTableCell } from "./tiptap/customtableCell";
 
 const extensions = [
   TextStyleKit,
   StarterKit,
   Highlight.configure({ multicolor: true }),
   configureLink,
+  Image,
+  ImagePasteRule,
+  TableKit.configure({
+    table: { resizable: true },
+    tableCell: false,
+  }),
+  // Default TableCell
+  // TableCell,
+  // Custom TableCell with backgroundColor attribute
+  CustomTableCell,
 ];
 
 type Props = {
@@ -24,9 +39,16 @@ type Props = {
   title: string | undefined;
   icon: string | null | undefined;
   banner: string | null | undefined;
+  JsonDoc: string | JSONContent;
 };
 
-const SynapsoEditor: React.FC<Props> = ({ id, title, icon, banner }) => {
+const SynapsoEditor: React.FC<Props> = ({
+  id,
+  title,
+  icon,
+  banner,
+  JsonDoc,
+}) => {
   const [showCommandInput, setShowCommandInput] = useState(false);
   const [commandText, setCommandText] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -63,7 +85,7 @@ const SynapsoEditor: React.FC<Props> = ({ id, title, icon, banner }) => {
   const editor = useEditor({
     extensions,
     immediatelyRender: false,
-    content: ``,
+    content: JsonDoc,
     onUpdate({ editor }) {
       const json = editor.getJSON();
       debouncedSave(json); // 👈 hook autosave into editor updates
@@ -162,7 +184,7 @@ const SynapsoEditor: React.FC<Props> = ({ id, title, icon, banner }) => {
             className="bg-transparent outline-none text-white w-full"
             value={commandText}
             onChange={(e) => setCommandText(e.target.value)}
-            placeholder="Ask Synapso AI… (not used yet)"
+            placeholder="press Esc to exit."
             onKeyDown={async (e) => {
               if (e.key === "Enter") {
                 e.preventDefault();

@@ -1,11 +1,29 @@
+import { getPage } from "@/app/actions/pages/getPage";
 import { fetchSubject } from "@/app/actions/subject/fetchSubject";
 import TextEditor from "@/components/TextEditor";
 import "@/styles/styles.scss";
+import type { JSONContent } from "@tiptap/core";
 
 const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
   const { subjectId } = await params;
 
   const subject = await fetchSubject(subjectId);
+  const data = await getPage(subjectId);
+  const raw = data?.data?.content;
+  let JsonDoc: JSONContent | string = "";
+
+  if (typeof raw === "string") {
+    try {
+      JsonDoc = JSON.parse(raw) as JSONContent;
+    } catch (e) {
+      console.error("Invalid JSON content from DB:", e);
+      JsonDoc = ""; 
+    }
+  } else {
+    JsonDoc = "";
+  }
+
+  console.log("this is json ", JsonDoc);
 
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
@@ -33,6 +51,7 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
           title={subject.data?.title}
           banner={subject.data?.banner}
           icon={subject.data?.icon}
+          JsonDoc={JsonDoc}
         />
       </div>
     </div>
