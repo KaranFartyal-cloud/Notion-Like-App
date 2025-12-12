@@ -15,6 +15,14 @@ import { Image } from "@tiptap/extension-image";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import { TableKit } from "@tiptap/extension-table";
 import { CustomTableCell } from "./tiptap/customtableCell";
+import {
+  Slash,
+  SlashCmdProvider,
+  enableKeyboardNavigation,
+} from "@harshtalks/slash-tiptap";
+import { suggestions } from "./tiptap/slashCommandConfig";
+import { Placeholder } from "@tiptap/extensions";
+import { SlashCmd } from "@harshtalks/slash-tiptap";
 
 const extensions = [
   TextStyleKit,
@@ -31,6 +39,23 @@ const extensions = [
   // TableCell,
   // Custom TableCell with backgroundColor attribute
   CustomTableCell,
+  Slash.configure({
+    suggestion: {
+      items: () => suggestions,
+    },
+  }),
+  Placeholder.configure({
+    // Use a placeholder:
+    placeholder: "Press / to see available commands",
+    // Use different placeholders depending on the node type:
+    // placeholder: ({ node }) => {
+    //   if (node.type.name === 'heading') {
+    //     return 'What’s the title?'
+    //   }
+
+    //   return 'Can you add some further context?'
+    // },
+  }),
 ];
 
 type Props = {
@@ -86,6 +111,15 @@ const SynapsoEditor: React.FC<Props> = ({
     extensions,
     immediatelyRender: false,
     content: JsonDoc,
+    editorProps: {
+      handleDOMEvents: {
+        keydown: (_, v) => enableKeyboardNavigation(v),
+      },
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+      },
+    },
     onUpdate({ editor }) {
       const json = editor.getJSON();
       debouncedSave(json); // 👈 hook autosave into editor updates
@@ -172,38 +206,61 @@ const SynapsoEditor: React.FC<Props> = ({
 
   return (
     <EditorContext.Provider value={{ editor }}>
-      <MenuBar editor={editor} />
-
-      {showCommandInput && (
-        <div
-          className="absolute z-50 bg-[#1f1f1f] border border-gray-700 rounded-lg p-2 w-1/2"
-          style={{ top: coords.top + 4, left: coords.left }}
-        >
-          <input
-            ref={inputRef}
-            className="bg-transparent outline-none text-white w-full"
-            value={commandText}
-            onChange={(e) => setCommandText(e.target.value)}
-            placeholder="press Esc to exit."
-            onKeyDown={async (e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                await handleAskAI();
-              }
-              if (e.key === "Escape") {
-                setShowCommandInput(false);
-                setCommandText("");
-              }
-            }}
-          />
-        </div>
-      )}
-
-      <EditorContent
-        className="mt-10 text-white"
-        placeholder="Press ctrl + space to ask from synapso AI.."
-        editor={editor}
-      />
+      <SlashCmdProvider>
+        <MenuBar editor={editor} />
+        {showCommandInput && (
+          <div
+            className="absolute z-50 bg-[#1f1f1f] border border-gray-700 rounded-lg p-2 w-1/2"
+            style={{ top: coords.top + 4, left: coords.left }}
+          >
+            <input
+              ref={inputRef}
+              className="bg-transparent outline-none text-white w-full"
+              value={commandText}
+              onChange={(e) => setCommandText(e.target.value)}
+              placeholder="press Esc to exit"
+              onKeyDown={async (e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  await handleAskAI();
+                }
+                if (e.key === "Escape") {
+                  setShowCommandInput(false);
+                  setCommandText("");
+                }
+              }}
+            />
+          </div>
+        )}
+        <EditorContent
+          className="mt-10 text-white"
+          placeholder="Press ctrl + space to ask from synapso AI.."
+          editor={editor}
+        />
+        <SlashCmd.Root editor={editor}>
+          <SlashCmd.Cmd className="bg-white">
+            <SlashCmd.Empty className="text-black">
+              No commands available
+            </SlashCmd.Empty>
+            <SlashCmd.List className="slash-menu-root ">
+              {suggestions.map((item) => {
+                return (
+                  <SlashCmd.Item
+                    className="slash-menu-item"
+                    value={item.title}
+                    onCommand={(val) => {
+                      item.command(val);
+                    }}
+                    key={item.title}
+                  >
+                    <p>{item.title}</p>
+                  </SlashCmd.Item>
+                );
+              })}
+            </SlashCmd.List>
+          </SlashCmd.Cmd>
+        </SlashCmd.Root>
+      </SlashCmdProvider>
     </EditorContext.Provider>
   );
 };

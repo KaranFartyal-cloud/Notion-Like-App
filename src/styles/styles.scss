@@ -146,3 +146,19 @@
   margin: 1.5rem 0;
   overflow-x: auto;
 }
+
+.slash-menu-root {
+  background: hsl(0, 0%, 100%);
+  border: 1px solid #000000;
+  border-radius: 4px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.slash-menu-item {
+  padding: 0.5rem 1rem;
+}
+
+.slash-menu-item:hover,
+.slash-menu-item[data-selected="true"] {
+  background: #333;
+}
