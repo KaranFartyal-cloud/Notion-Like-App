@@ -20,7 +20,7 @@ export default function Navbar() {
 
         <div className="flex gap-4 items-center">
           <Button className="px-5 py-2 bg-white text-[#4B91DE] border border-[#4B91DE] hover:bg-[#4B91DE] hover:text-white transition">
-            <Link href={"/login"}>Login</Link>
+            <Link href={"/sign-in"}>Sign-in</Link>
           </Button>
 
           <Button className="px-5 py-2 bg-[#4B91DE] text-white hover:bg-[#357CC7] transition">

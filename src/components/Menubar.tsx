@@ -73,7 +73,6 @@ export function MenuBar({ editor }: { editor: Editor }) {
         isHeading1: ctx.editor?.isActive("heading", { level: 1 }) ?? false,
         isHeading2: ctx.editor?.isActive("heading", { level: 2 }) ?? false,
         isHeading3: ctx.editor?.isActive("heading", { level: 3 }) ?? false,
-
         isBulletList: ctx.editor?.isActive("bulletList") ?? false,
         isOrderedList: ctx.editor?.isActive("orderedList") ?? false,
         isCodeBlock: ctx.editor?.isActive("codeBlock") ?? false,
@@ -272,7 +271,7 @@ export function MenuBar({ editor }: { editor: Editor }) {
           Unset highlight
         </Button>
       </ToolbarGroup>
-     
+
       <ToolbarSeparator />
       <ToolbarGroup>
         <Button

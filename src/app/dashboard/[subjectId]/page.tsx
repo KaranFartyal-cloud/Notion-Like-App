@@ -23,7 +23,7 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
     JsonDoc = "";
   }
 
-  console.log("this is json ", JsonDoc);
+  
 
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">

@@ -1,62 +1,19 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { configureLink } from "@/config/link";
-import Highlight from "@tiptap/extension-highlight";
 import { MenuBar } from "./Menubar";
 import { callAI } from "@/app/actions/askAI";
 import { storeData } from "@/app/actions/pages/storeContent";
 import type { JSONContent } from "@tiptap/core";
-import { ImagePasteRule } from "./tiptap/pasteRules";
-import { Image } from "@tiptap/extension-image";
 import "@/components/tiptap-node/image-node/image-node.scss";
-import { TableKit } from "@tiptap/extension-table";
-import { CustomTableCell } from "./tiptap/customtableCell";
+import { extensions } from "./tiptap/extensions";
 import {
-  Slash,
   SlashCmdProvider,
   enableKeyboardNavigation,
 } from "@harshtalks/slash-tiptap";
 import { suggestions } from "./tiptap/slashCommandConfig";
-import { Placeholder } from "@tiptap/extensions";
 import { SlashCmd } from "@harshtalks/slash-tiptap";
-
-const extensions = [
-  TextStyleKit,
-  StarterKit,
-  Highlight.configure({ multicolor: true }),
-  configureLink,
-  Image,
-  ImagePasteRule,
-  TableKit.configure({
-    table: { resizable: true },
-    tableCell: false,
-  }),
-  // Default TableCell
-  // TableCell,
-  // Custom TableCell with backgroundColor attribute
-  CustomTableCell,
-  Slash.configure({
-    suggestion: {
-      items: () => suggestions,
-    },
-  }),
-  Placeholder.configure({
-    // Use a placeholder:
-    placeholder: "Press / to see available commands",
-    // Use different placeholders depending on the node type:
-    // placeholder: ({ node }) => {
-    //   if (node.type.name === 'heading') {
-    //     return 'What’s the title?'
-    //   }
-
-    //   return 'Can you add some further context?'
-    // },
-  }),
-];
 
 type Props = {
   id: string | undefined;
@@ -194,7 +151,9 @@ const SynapsoEditor: React.FC<Props> = ({
 
   const handleAskAI = async () => {
     try {
-      const result = await callAI();
+      const text = editor.getText();
+      const result = await callAI(text, commandText);
+
       editor.chain().focus().insertContent(String(result)).run();
     } catch (err) {
       console.error("AI error:", err);
@@ -238,12 +197,12 @@ const SynapsoEditor: React.FC<Props> = ({
           editor={editor}
         />
         <SlashCmd.Root editor={editor}>
-          <SlashCmd.Cmd className="bg-white">
-            <SlashCmd.Empty className="text-black">
+          <SlashCmd.Cmd className="bg-white rounded-lg h-[200px] overflow-hidden">
+            <SlashCmd.Empty className="text-black ">
               No commands available
             </SlashCmd.Empty>
             <SlashCmd.List className="slash-menu-root ">
-              {suggestions.map((item) => {
+              {suggestions.map((item, index) => {
                 return (
                   <SlashCmd.Item
                     className="slash-menu-item"
