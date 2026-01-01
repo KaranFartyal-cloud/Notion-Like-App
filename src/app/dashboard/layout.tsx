@@ -2,16 +2,17 @@ import RightSidebar from "@/components/RightSidebar";
 import { SubjectProvider } from "@/context/subjectProvider";
 import React from "react";
 import { fetchSubjects } from "../actions/subject/fetchSubjects";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const res = await fetchSubjects();
   return (
     <SubjectProvider>
-      <div className="w-full flex">
+      <SidebarProvider>
         <RightSidebar data={res.subjects!} />
 
-       {children}
-      </div>
+        {children}
+      </SidebarProvider>
     </SubjectProvider>
   );
 };

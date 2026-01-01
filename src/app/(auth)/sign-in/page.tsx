@@ -1,6 +1,7 @@
 "use client";
 import { loginUser } from "@/app/actions/loginUser";
-import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +12,7 @@ export default function LoginPage() {
     password: "",
   });
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,6 +23,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const res = await loginUser(userData);
       if (res.success) {
         console.log(res.message);
@@ -29,28 +32,27 @@ export default function LoginPage() {
     } catch (error) {
       console.log(error);
       console.log("couldn't sign-in user");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <motion.form
+    <div className="flex min-h-screen justify-center items-center">
+      <form
         onSubmit={submitHandler}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-gray-800 p-10 rounded-xl shadow-xl w-[90%] max-w-md"
+        className=" p-10 rounded-xl shadow-xl w-[90%] max-w-md"
       >
-        <h1 className="text-3xl font-bold text-white text-center mb-6">
-          Login
-        </h1>
+        <div className="flex">
+          <h1 className="text-3xl  text-black  mb-6">Sign in to synapso</h1>
+        </div>
 
         <div className="flex flex-col gap-4">
           <input
             type="email"
             name="email"
             placeholder="Email"
-            className="p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-box "
             onChange={changeHandler}
           />
 
@@ -58,25 +60,22 @@ export default function LoginPage() {
             type="password"
             name="password"
             placeholder="Password"
-            className="p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-box"
             onChange={changeHandler}
           />
 
-          <button
-            type="submit"
-            className="mt-4 p-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition-all"
-          >
-            Login
-          </button>
+          <Button disabled={loading} type="submit" className="mt-4 p-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition-all">
+            {loading ? <Spinner /> : "Login"}
+          </Button>
         </div>
 
         <p className="text-gray-400 text-center mt-4 text-sm">
-          Don’t have an account?{" "}
+          Don’t have an account?
           <Link href={"/sign-up"}>
-            <span className="text-blue-400 cursor-pointer">Sign Up</span>
+            <span className="text-blue-400 cursor-pointer">{"  "}Sign Up</span>
           </Link>
         </p>
-      </motion.form>
+      </form>
     </div>
   );
 }

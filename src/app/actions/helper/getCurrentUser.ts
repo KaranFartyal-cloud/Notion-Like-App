@@ -17,6 +17,11 @@ export const getCurrentUser = async () => {
 
   const user = await db.query.usersTable.findFirst({
     where: (u, { eq }) => eq(u.id, session.userId),
+    columns: {
+      id: true,
+      email: true,
+      name: true,
+    },
   });
 
   return user;

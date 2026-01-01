@@ -7,6 +7,17 @@ import { createSubject } from "@/app/actions/subject/createSubject";
 import { Input } from "@/components/ui/input";
 import { useSubjects } from "@/context/subjectProvider";
 import Link from "next/link";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "./ui/sidebar";
 
 type Props = {
   data: {
@@ -75,49 +86,69 @@ const RightSidebar: React.FC<Props> = ({ data }) => {
   }, [isAdding, title]);
 
   return (
-    <div className="w-1/7 h-screen  bg-[#202020] flex flex-col pl-4  text-white">
-      <h1 className=" capitalize text-lg pb-2 font-bold py-3">karan fartyal</h1>
+    <Sidebar>
+      <SidebarContent className="bg-[#151515] text-white">
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-lg text-white mb-3">
+            Application
+          </SidebarGroupLabel>
 
-      {primary.map((item, index) => (
-        <SidebarListItem key={index} item={item} />
-      ))}
-      <div className="flex gap-4 items-center">
-        <h1 className="capitalize text-lg pb-2 font-bold py-3">Workspaces</h1>
-        <Plus width={18} className="mt-1" onClick={() => setIsAdding(true)} />
-      </div>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {primary.map((item, index) => (
+                <SidebarListItem key={index} item={item} />
+              ))}
+              <div className="flex gap-4 justify-between">
+                <SidebarGroupLabel className="text-lg text-white mb-3">
+                  Workspaces
+                </SidebarGroupLabel>
+                <Plus
+                className="translate-y-[6px] -translate-x-10"
+                  width={18}
+                  
+                  onClick={() => setIsAdding(true)}
+                />
+              </div>
+              {isAdding && (
+                <Input
+                  ref={inputRef}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (title.trim().length > 0) {
+                        addToSubject();
+                      }
+                      setTitle("");
+                      setIsAdding(false);
+                    }
+                    if (e.key === "Escape") {
+                      setTitle("");
+                      setIsAdding(false);
+                    }
+                  }}
+                  className="p-2 border rounded w-3/4 mb-2 bg-gray-800 text-white"
+                  placeholder="Enter subject name…"
+                />
+              )}
+              {subjects.map((item) => (
+                <Link
+                  href={`/dashboard/${item.id}`}
+                  key={item.id}
+                  className="w-full"
+                >
+                  <SidebarMenuItem className="w-full flex justify-start items-center gap-2 pl-4 pb-2 ">
+                    {item.icon}
 
-      {isAdding && (
-        <Input
-          ref={inputRef}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (title.trim().length > 0) {
-                addToSubject();
-              }
-              setTitle("");
-              setIsAdding(false);
-            }
-            if (e.key === "Escape") {
-              setTitle("");
-              setIsAdding(false);
-            }
-          }}
-          className="p-2 border rounded w-3/4 mb-2 bg-gray-800 text-white"
-          placeholder="Enter subject name…"
-        />
-      )}
-      {subjects.map((item) => (
-        <Link href={`/dashboard/${item.id}`} key={item.id} className="w-full">
-          <div className="w-full flex hover:bg-[#2f2f2f] duration-100 ease-in rounded-lg justify-start items-center gap-2 pl-4 pb-2">
-            {item.icon}
-
-            <span className="text-lg">{item.title}</span>
-          </div>
-        </Link>
-      ))}
-    </div>
+                    <span>{item.title}</span>
+                  </SidebarMenuItem>
+                </Link>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 };
 

@@ -1,6 +1,7 @@
 import { getPage } from "@/app/actions/pages/getPage";
 import { fetchSubject } from "@/app/actions/subject/fetchSubject";
 import TextEditor from "@/components/TextEditor";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import "@/styles/styles.scss";
 import type { JSONContent } from "@tiptap/core";
 
@@ -27,6 +28,7 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
 
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
+      <SidebarTrigger className="text-white"></SidebarTrigger>
       {/* Image Box */}
       <div className={"w-full h-[200px] overflow-hidden relative" + ``}>
         {subject.data?.banner && (

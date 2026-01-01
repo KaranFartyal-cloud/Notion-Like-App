@@ -1,11 +1,49 @@
-@import '../styles/_variables.scss';
-@import '../styles/_keyframe-animations.scss';
+@import "../styles/_variables.scss";
+@import "../styles/_keyframe-animations.scss";
 
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: Antonio;
+  src: url("/fonts/Antonio,Oswald/Antonio/static/Antonio-Bold.ttf");
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Quattrocento;
+  src: url("/fonts/Antonio,Oswald,Quattrocento/Quattrocento/Quattrocento-Bold.ttf");
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url("/fonts/Antonio,Oswald,Quattrocento,Roboto/Roboto/Roboto-VariableFont_wdth,wght.ttf");
+}
+
+@theme {
+  --font-antonio: Antonio, sans-serif;
+  --font-para: Quattrocento, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+}
+
+@layer components {
+  .input-box {
+    @apply bg-white border-2 px-5 rounded-lg py-2;
+  }
+
+  .btn-primary {
+    @apply bg-blue-500 font-para px-3 py-2 rounded-lg text-white;
+  }
+}
+
+@utility font-header {
+  font-family: var(--font-header);
+}
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -114,11 +152,25 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  :root {
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .dark {
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.439 0 0);
   }
 }
-

@@ -1,10 +1,12 @@
-"use client";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "../actions/helper/getCurrentUser";
 
-import React, { useState } from "react";
+export default async function Page() {
+  const user = await getCurrentUser();
 
-export default function Page() {
-  const [title, setTitle] = useState("Untitled");
-  const [content, setContent] = useState("");
+  if (!user) {
+    redirect("/");
+  }
 
   return (
     <div className="w-full h-30[vh] overflow-y-auto bg-neutral-50 ">

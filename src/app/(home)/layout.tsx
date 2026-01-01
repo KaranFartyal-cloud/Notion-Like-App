@@ -1,12 +1,14 @@
 import Navbar from "@/components/Navbar";
 import React from "react";
+import { getCurrentUser } from "../actions/helper/getCurrentUser";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const layout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await getCurrentUser();
   return (
     <div className="flex justify-center">
+      <Navbar user={user} />
       <div className="container">
-        <Navbar />
-        <div>{children}</div>
+        <div className="flex justify-center">{children}</div>
       </div>
     </div>
   );
