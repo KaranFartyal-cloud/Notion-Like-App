@@ -73,4 +73,11 @@ export const suggestions = createSuggestionsItems([
       editor.chain().focus().toggleHeading({ level: 1 }).run();
     },
   },
+  {
+    title: "Delete Table",
+    searchTerms: ["delete", "table"],
+    command: ({ editor }) => {
+      editor.chain().focus().deleteTable().run();
+    },
+  },
 ]);

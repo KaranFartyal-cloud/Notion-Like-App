@@ -14,6 +14,16 @@ import {
 } from "@harshtalks/slash-tiptap";
 import { suggestions } from "./tiptap/slashCommandConfig";
 import { SlashCmd } from "@harshtalks/slash-tiptap";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import { ArrowUpIcon, CircleArrowUp, Sparkles } from "lucide-react";
+import { Separator } from "./ui/separator";
 
 type Props = {
   id: string | undefined;
@@ -34,8 +44,7 @@ const SynapsoEditor: React.FC<Props> = ({
   const [showCommandInput, setShowCommandInput] = useState(false);
   const [commandText, setCommandText] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [coords, setCoords] = useState({ top: 0, left: 0 });
-
+  const [changeColor, setChangeColor] = useState(false);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const debouncedSave = useCallback(
@@ -75,6 +84,8 @@ const SynapsoEditor: React.FC<Props> = ({
       attributes: {
         class:
           "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+
+        spellcheck: false,
       },
     },
     onUpdate({ editor }) {
@@ -92,24 +103,6 @@ const SynapsoEditor: React.FC<Props> = ({
     }, 0);
 
     return () => clearTimeout(t);
-  }, [editor]);
-
-  // Track cursor position for command input placement
-  useEffect(() => {
-    if (!editor) return;
-
-    const handler = () => {
-      const pos = editor.view.coordsAtPos(editor.state.selection.from);
-      setCoords({
-        top: pos.bottom,
-        left: pos.left,
-      });
-    };
-
-    editor.on("selectionUpdate", handler);
-    return () => {
-      editor.off("selectionUpdate", handler);
-    };
   }, [editor]);
 
   // Focus input when shown
@@ -163,32 +156,54 @@ const SynapsoEditor: React.FC<Props> = ({
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    setCommandText(value);
+    setChangeColor(value.trim().length > 0);
+  };
+
   return (
     <EditorContext.Provider value={{ editor }}>
       <SlashCmdProvider>
         <MenuBar editor={editor} />
         {showCommandInput && (
-          <div
-            className="absolute z-50 bg-[#1f1f1f] border border-gray-700 rounded-lg p-2 w-1/2"
-            style={{ top: coords.top + 4, left: coords.left }}
-          >
-            <input
-              ref={inputRef}
-              className="bg-transparent outline-none text-white w-full"
-              value={commandText}
-              onChange={(e) => setCommandText(e.target.value)}
-              placeholder="press Esc to exit"
-              onKeyDown={async (e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  await handleAskAI();
-                }
-                if (e.key === "Escape") {
-                  setShowCommandInput(false);
-                  setCommandText("");
-                }
-              }}
-            />
+          <div className="absolute bottom-0 -translate-y-[7vh] translate-x-[9vw] z-50 bg-[#FEFDFE] rounded-lg w-1/2">
+            <InputGroup>
+              <InputGroupButton className={"h-full flex items-center"}>
+                <Sparkles />
+              </InputGroupButton>
+              <InputGroupInput
+                ref={inputRef}
+                className="bg-transparent outline-none text-black w-full"
+                value={commandText}
+                onChange={handleChange}
+                placeholder="press Esc to exit"
+                onKeyDown={async (e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    await handleAskAI();
+                  }
+                  if (e.key === "Escape") {
+                    setShowCommandInput(false);
+                    setCommandText("");
+                  }
+                }}
+              />
+              <Separator orientation="vertical" className="!h-4 mr-3" />
+              <InputGroupAddon align={"inline-end"}>
+                <InputGroupButton
+                  variant="default"
+                  className={`rounded-full  ${
+                    changeColor ? "bg-blue-500" : "bg-gray-400"
+                  }`}
+                  size="icon-xs"
+                  disabled
+                >
+                  <ArrowUpIcon />
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
           </div>
         )}
         <EditorContent

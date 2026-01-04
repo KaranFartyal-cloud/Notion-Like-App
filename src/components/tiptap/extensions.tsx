@@ -9,6 +9,10 @@ import { Slash } from "@harshtalks/slash-tiptap";
 import { ImagePasteRule } from "./pasteRules";
 import { CustomTableCell } from "./customtableCell";
 import { suggestions } from "./slashCommandConfig";
+import ImageResize from 'tiptap-extension-resize-image'
+
+
+// fix the resize issue
 
 export const extensions = [
   TextStyleKit,
@@ -16,12 +20,19 @@ export const extensions = [
   Highlight.configure({ multicolor: true }),
   configureLink,
   Image,
+  ImageResize.configure({
+    resize: {
+      minWidth: 50,
+      enabled: true,
+      alwaysPreserveAspectRatio: true,
+    },
+  }),
   ImagePasteRule,
   TableKit.configure({
     table: { resizable: true },
     tableCell: false,
   }),
-  
+
   CustomTableCell,
   Slash.configure({
     suggestion: {

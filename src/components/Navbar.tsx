@@ -15,7 +15,7 @@ import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { logoutUser } from "@/app/actions/logoutUser";
 
-type User =
+export type User =
   | {
       id: string;
       email: string;
@@ -41,49 +41,69 @@ export default function Navbar({ user }: { user: User }) {
   };
 
   return (
-    <nav className="w-screen font-roboto fixed text-sm px-10 bg-[#FFFFFF]">
-      <div className="flex justify-between items-center">
-        <Image src={"/logo.png"} width={50} height={50} alt="logo image" />
-        <div className="relative hidden md:block">
-          <NavbarList />
-        </div>
-        <div className="relative hidden  md:flex gap-3">
-          {!user && (
-            <>
-              <Link href="/sign-in">
-                <Button className="h-8 text-sm" variant={"ghost"}>
-                  Login
-                </Button>
-              </Link>
-              <Link href={"/sign-up"}>
-                <Button className="px-10 h-8 text-sm">Sign-up</Button>
-              </Link>
-            </>
-          )}
+    <nav className="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <div className="shrink-0">
+              <Image
+                src={"/logo.png"}
+                width={50}
+                height={50}
+                alt="logo image"
+              />
+            </div>
 
-          {user && (
-            <Button
-              variant={"ghost"}
-              className="text-red-400 hover:text-red-500"
-              onClick={handleLogout}
-            >
-              <LogOut />
-            </Button>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <NavbarList user={user} />
+              </div>
+            </div>
+          </div>
+
+          <div className="relative hidden  md:flex gap-3">
+            {!user && (
+              <>
+                <Link href="/sign-in">
+                  <Button
+                    className="h-8 text-sm transition delay-150 duration-300 ease-in-out"
+                    variant={"ghost"}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link href={"/sign-up"}>
+                  <Button className="px-10 h-8 text-sm bg-[#0A7FE8]  hover:bg-[#2399ff] transition delay-150 duration-300 ease-in-out">
+                    Sign-up
+                  </Button>
+                </Link>
+              </>
+            )}
+
+            {user && (
+              <Button
+                variant={"ghost"}
+                className="text-red-400 hover:text-red-500"
+                onClick={handleLogout}
+              >
+                <LogOut />
+              </Button>
+            )}
+          </div>
+          {isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="-translate-x-5 px-5 py-2 rounded-lg ">
+                <Menu width={20} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="-translate-x-2">
+                <DropdownMenuItem>Login</DropdownMenuItem>
+                <DropdownMenuItem>Sign-up</DropdownMenuItem>
+                <DropdownMenuItem>Usage</DropdownMenuItem>
+                <DropdownMenuItem>Screenshots</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
-        {isMobile && (
-          <DropdownMenu>
-            <DropdownMenuTrigger className="-translate-x-5 px-5 py-2 rounded-lg ">
-              <Menu width={20} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="-translate-x-2">
-              <DropdownMenuItem>Login</DropdownMenuItem>
-              <DropdownMenuItem>Sign-up</DropdownMenuItem>
-              <DropdownMenuItem>Usage</DropdownMenuItem>
-              <DropdownMenuItem>Screenshots</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
       </div>
     </nav>
   );

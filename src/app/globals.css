@@ -7,28 +7,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: Antonio;
-  src: url("/fonts/Antonio,Oswald/Antonio/static/Antonio-Bold.ttf");
-  font-weight: 100 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Quattrocento;
-  src: url("/fonts/Antonio,Oswald,Quattrocento/Quattrocento/Quattrocento-Bold.ttf");
-  font-weight: 100 700;
-  font-display: swap;
-}
-
-@font-face {
   font-family: Roboto;
   src: url("/fonts/Antonio,Oswald,Quattrocento,Roboto/Roboto/Roboto-VariableFont_wdth,wght.ttf");
 }
 
+@font-face {
+  font-family: Neus;
+  src: url("/fonts/fonnts.com-Neue_Haas_Grotesk_Text_Pro_75_Bold.otf");
+}
+
 @theme {
-  --font-antonio: Antonio, sans-serif;
-  --font-para: Quattrocento, sans-serif;
   --font-roboto: Roboto, sans-serif;
+  --font-neus: Neus, sans-serif;
 }
 
 @layer components {
@@ -37,7 +27,7 @@
   }
 
   .btn-primary {
-    @apply bg-blue-500 font-para px-3 py-2 rounded-lg text-white;
+    @apply bg-blue-500 px-3 py-2 rounded-lg text-white;
   }
 }
 
@@ -172,5 +162,34 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.439 0 0);
+  }
+}
+
+.glow::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  filter: blur(50px);
+  transform: scale(2);
+  background: linear-gradient(90deg, #48a1ff, #50b9ff);
+  background-size: 200% 200%;
+  animation: animateglow 10s ease infinite;
+}
+
+@keyframes animateglow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

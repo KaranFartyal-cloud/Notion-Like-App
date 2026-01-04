@@ -13,24 +13,28 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
   const raw = data?.data?.content;
   let JsonDoc: JSONContent | string = "";
 
+
+
+  console.log(`this is json doc ${raw}`);
+
   if (typeof raw === "string") {
     try {
       JsonDoc = JSON.parse(raw) as JSONContent;
     } catch (e) {
       console.error("Invalid JSON content from DB:", e);
-      JsonDoc = ""; 
+      JsonDoc = "";
     }
   } else {
     JsonDoc = "";
   }
 
-  
+  console.log(JsonDoc)
 
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
-      <SidebarTrigger className="text-white"></SidebarTrigger>
+      <SidebarTrigger className="bg-blue-600 fixed translate-y-3 z-25 text-white"></SidebarTrigger>
       {/* Image Box */}
-      <div className={"w-full h-[200px] overflow-hidden relative" + ``}>
+      <div>
         {subject.data?.banner && (
           <img
             src={"/welcome.jpg"}
@@ -41,7 +45,7 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
       </div>
 
       {/* Welcome Text (OVERFLOWS freely) */}
-      <h1 className="text-5xl  text-white font-bold relative -mt-7 ml-6">
+      <h1 className="text-6xl  text-white font-neus mt-[70px] text-center">
         {subject.data?.title}
       </h1>
 

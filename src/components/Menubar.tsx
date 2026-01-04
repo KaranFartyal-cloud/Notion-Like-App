@@ -22,6 +22,7 @@ import {
   Undo,
 } from "lucide-react";
 import { StrikeIcon } from "./tiptap-icons/strike-icon";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export function MenuBar({ editor }: { editor: Editor }) {
   // Read the current editor's state, and re-render the component when it changes
@@ -85,225 +86,231 @@ export function MenuBar({ editor }: { editor: Editor }) {
   });
 
   return (
-    <Toolbar variant="floating">
-      <ToolbarGroup className="control-group ">
+    <div className="fixed z-5 w-full bg-white top-0  flex justify-center">
+      <Toolbar className="flex justify-center -translate-x-25">
+        <ToolbarGroup className="control-group ">
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editorState.canBold}
+            className={
+              "flex items-center" + editorState.isBold ? "is-active" : ""
+            }
+          >
+            <Bold width={15} />
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            disabled={!editorState.canItalic}
+            className={editorState.isItalic ? "is-active" : ""}
+          >
+            <Italic width={15} />
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            disabled={!editorState.canStrike}
+            className={editorState.isStrike ? "is-active" : ""}
+          >
+            <StrikeIcon width={15} />
+          </Button>
+        </ToolbarGroup>
+        <ToolbarSeparator />
         <Button
           data-style="ghost"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editorState.canBold}
-          className={
-            "flex items-center" + editorState.isBold ? "is-active" : ""
-          }
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          disabled={!editorState.canCode}
+          className={editorState.isCode ? "is-active" : ""}
         >
-          <Bold width={15} />
+          <Code width={15} />
+        </Button>
+        <ToolbarSeparator />
+        <ToolbarGroup className="control-group">
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={editorState.isHeading1 ? "is-active" : ""}
+          >
+            H1
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={editorState.isHeading2 ? "is-active" : ""}
+          >
+            H2
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            className={editorState.isHeading3 ? "is-active" : ""}
+          >
+            H3
+          </Button>
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <Button
+          data-style="ghost"
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={editorState.isBulletList ? "is-active" : ""}
+        >
+          <List width={15} />
         </Button>
         <Button
           data-style="ghost"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editorState.canItalic}
-          className={editorState.isItalic ? "is-active" : ""}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={editorState.isOrderedList ? "is-active" : ""}
         >
-          <Italic width={15} />
+          <ListOrdered width={15} />
+        </Button>
+        <ToolbarSeparator />
+        <Button
+          data-style="ghost"
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          className={editorState.isCodeBlock ? "is-active" : ""}
+        >
+          <SquareDashedBottomCode width={15} />
         </Button>
         <Button
           data-style="ghost"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editorState.canStrike}
-          className={editorState.isStrike ? "is-active" : ""}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          className={editorState.isBlockquote ? "is-active" : ""}
         >
-          <StrikeIcon width={15} />
+          Blockquote
         </Button>
-      </ToolbarGroup>
-      <ToolbarSeparator />
-      <Button
-        data-style="ghost"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editorState.canCode}
-        className={editorState.isCode ? "is-active" : ""}
-      >
-        <Code width={15} />
-      </Button>
-      <ToolbarSeparator />
-      <ToolbarGroup className="control-group">
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={editorState.isHeading1 ? "is-active" : ""}
-        >
-          H1
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={editorState.isHeading2 ? "is-active" : ""}
-        >
-          H2
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={editorState.isHeading3 ? "is-active" : ""}
-        >
-          H3
-        </Button>
-      </ToolbarGroup>
-      <ToolbarSeparator />
-      <Button
-        data-style="ghost"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editorState.isBulletList ? "is-active" : ""}
-      >
-        <List width={15} />
-      </Button>
-      <Button
-        data-style="ghost"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editorState.isOrderedList ? "is-active" : ""}
-      >
-        <ListOrdered width={15} />
-      </Button>
-      <ToolbarSeparator />
-      <Button
-        data-style="ghost"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editorState.isCodeBlock ? "is-active" : ""}
-      >
-        <SquareDashedBottomCode width={15} />
-      </Button>
-      <Button
-        data-style="ghost"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editorState.isBlockquote ? "is-active" : ""}
-      >
-        Blockquote
-      </Button>
-      <ToolbarSeparator />
-      <ToolbarGroup>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#ffc078" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: "#ffc078" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#ffc078]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#425646" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: "#425646" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#76f08e]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#74c0fc" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: "#74c0fc" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#74c0fc]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#b197fc" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: "#b197fc" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#b197fc]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: " #ffa8a8" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: " #ffa8a8" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#ffa8a8]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#8d7f00" }).run()
-          }
-          className={
-            editor?.isActive("highlight", { color: "#8d7f00" })
-              ? "is-active"
-              : ""
-          }
-        >
-          <div className="h-[15px] w-[15px] rounded-full bg-[#ffe600]"></div>
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() => editor.chain().focus().unsetHighlight().run()}
-          disabled={!editor?.isActive("highlight")}
-        >
-          Unset highlight
-        </Button>
-      </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHighlight({ color: "#ffc078" }).run()
+            }
+            className={
+              editor?.isActive("highlight", { color: "#ffc078" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#ffc078]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHighlight({ color: "#425646" }).run()
+            }
+            className={
+              editor?.isActive("highlight", { color: "#425646" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#76f08e]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHighlight({ color: "#74c0fc" }).run()
+            }
+            className={
+              editor?.isActive("highlight", { color: "#74c0fc" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#74c0fc]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHighlight({ color: "#b197fc" }).run()
+            }
+            className={
+              editor?.isActive("highlight", { color: "#b197fc" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#b197fc]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor
+                .chain()
+                .focus()
+                .toggleHighlight({ color: " #ffa8a8" })
+                .run()
+            }
+            className={
+              editor?.isActive("highlight", { color: " #ffa8a8" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#ffa8a8]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() =>
+              editor.chain().focus().toggleHighlight({ color: "#8d7f00" }).run()
+            }
+            className={
+              editor?.isActive("highlight", { color: "#8d7f00" })
+                ? "is-active"
+                : ""
+            }
+          >
+            <div className="h-[15px] w-[15px] rounded-full bg-[#ffe600]"></div>
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().unsetHighlight().run()}
+            disabled={!editor?.isActive("highlight")}
+          >
+            Unset highlight
+          </Button>
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
-      <ToolbarGroup>
-        <Button
-          data-style="ghost"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editorState.canUndo}
-        >
-          <Undo width={15} />
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editorState.canRedo}
-        >
-          <Redo width={15} />
-        </Button>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editorState.canUndo}
+          >
+            <Undo width={15} />
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editorState.canRedo}
+          >
+            <Redo width={15} />
+          </Button>
 
-        <Button
-          onClick={setLink}
-          data-style="ghost"
-          className={editorState.isLink ? "is-active" : ""}
-        >
-          <Link width={15} />
-        </Button>
-        <Button
-          data-style="ghost"
-          onClick={() => editor.chain().focus().unsetLink().run()}
-          disabled={!editorState.isLink}
-        >
-          <Link2Off width={15} />
-        </Button>
-      </ToolbarGroup>
-    </Toolbar>
+          <Button
+            onClick={setLink}
+            data-style="ghost"
+            className={editorState.isLink ? "is-active" : ""}
+          >
+            <Link width={15} />
+          </Button>
+          <Button
+            data-style="ghost"
+            onClick={() => editor.chain().focus().unsetLink().run()}
+            disabled={!editorState.isLink}
+          >
+            <Link2Off width={15} />
+          </Button>
+        </ToolbarGroup>
+      </Toolbar>
+    </div>
   );
 }
