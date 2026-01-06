@@ -7,15 +7,11 @@ import type { JSONContent } from "@tiptap/core";
 
 const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
   const { subjectId } = await params;
-
+  console.log("i am rendered");
   const subject = await fetchSubject(subjectId);
   const data = await getPage(subjectId);
   const raw = data?.data?.content;
   let JsonDoc: JSONContent | string = "";
-
-
-
-  console.log(`this is json doc ${raw}`);
 
   if (typeof raw === "string") {
     try {
@@ -27,8 +23,6 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
   } else {
     JsonDoc = "";
   }
-
-  console.log(JsonDoc)
 
   return (
     <div className=" bg-[#191919] w-full h-screen overflow-scroll overflow-x-hidden">
@@ -45,7 +39,7 @@ const page = async ({ params }: { params: Promise<{ subjectId: string }> }) => {
       </div>
 
       {/* Welcome Text (OVERFLOWS freely) */}
-      <h1 className="text-6xl  text-white font-neus mt-[70px] text-center">
+      <h1 className="text-5xl text-white font-neus mt-[70px] text-center">
         {subject.data?.title}
       </h1>
 

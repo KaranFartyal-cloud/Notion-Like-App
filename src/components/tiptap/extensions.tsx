@@ -19,10 +19,10 @@ export const extensions = [
   StarterKit,
   Highlight.configure({ multicolor: true }),
   configureLink,
-  Image,
+ 
   ImageResize.configure({
     resize: {
-      minWidth: 50,
+      
       enabled: true,
       alwaysPreserveAspectRatio: true,
     },

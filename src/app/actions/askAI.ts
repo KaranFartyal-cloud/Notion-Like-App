@@ -43,7 +43,7 @@ export const callAI = async (content: string, description: string) => {
     const raw_result = response.output_text;
 
     const jsonData = JSON.parse(raw_result)
-    console.log(jsonData)
+   
 
     return jsonData.Output
     

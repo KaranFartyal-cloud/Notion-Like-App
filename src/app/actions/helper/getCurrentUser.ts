@@ -13,6 +13,8 @@ export const getCurrentUser = async () => {
     where: (s, { eq }) => eq(s.id, sessionId),
   });
 
+  console.log(session);
+
   if (!session) return null;
 
   const user = await db.query.usersTable.findFirst({

@@ -46,6 +46,7 @@ const SynapsoEditor: React.FC<Props> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [changeColor, setChangeColor] = useState(false);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const debouncedSave = useCallback(
     (json: JSONContent) => {
@@ -144,6 +145,8 @@ const SynapsoEditor: React.FC<Props> = ({
 
   const handleAskAI = async () => {
     try {
+      console.log('handle ai is called')
+      setLoading(true);
       const text = editor.getText();
       const result = await callAI(text, commandText);
 
@@ -152,7 +155,7 @@ const SynapsoEditor: React.FC<Props> = ({
       console.error("AI error:", err);
     } finally {
       setCommandText("");
-      setShowCommandInput(false);
+      setLoading(false);
     }
   };
 
@@ -175,9 +178,10 @@ const SynapsoEditor: React.FC<Props> = ({
               </InputGroupButton>
               <InputGroupInput
                 ref={inputRef}
-                className="bg-transparent outline-none text-black w-full"
+                className="bg-transparent outline-none text-black w-full ring-0 focus:ring-0"
                 value={commandText}
                 onChange={handleChange}
+                disabled={loading}
                 placeholder="press Esc to exit"
                 onKeyDown={async (e) => {
                   if (e.key === "Enter") {

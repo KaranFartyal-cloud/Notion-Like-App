@@ -139,13 +139,13 @@ const RightSidebar: React.FC<Props> = ({ data, user }) => {
                     placeholder="Enter subject name…"
                   />
                 )}
-                {subjects.map((item) => (
+                {subjects?.map((item) => (
                   <Link
                     href={`/dashboard/${item.id}`}
                     key={item.id}
                     className="w-full"
                   >
-                    <SidebarMenuItem className="w-full flex justify-start items-center gap-2 pl-4 pb-2 ">
+                    <SidebarMenuItem className="w-full flex justify-start hover:bg-[#23232350] my-auto rounded-lg items-center gap-2 pl-4 pb-2 ">
                       {item.icon ? item.icon : <FileText width={18} />}
 
                       <span>{item.title}</span>

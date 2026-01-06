@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../actions/helper/getCurrentUser";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 export default async function Page() {
   const user = await getCurrentUser();
@@ -10,13 +12,10 @@ export default async function Page() {
 
   return (
     <div className="w-full h-30[vh] overflow-y-auto bg-neutral-50 ">
+      <SidebarTrigger className="bg-blue-600 fixed translate-y-3 z-25 text-white"></SidebarTrigger>
       {/* Image Box */}
       <div className="w-full h-[200px] overflow-hidden relative">
-        <img
-          src="/welcome.jpg"
-          alt=""
-          className=" object-cover w-full h-full"
-        />
+        <Image src="/welcome.jpg" alt="" fill objectFit="cover" />
       </div>
 
       {/* Welcome Text (OVERFLOWS freely) */}
